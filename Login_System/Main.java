@@ -57,14 +57,13 @@ public class Main {
 
                 case 3:
                     // display
-                    if(!user.isEmpty()){
-                    for (Login users : user.values()) {
-                        users.Display();
+                    if (!user.isEmpty()) {
+                        for (Login users : user.values()) {
+                            users.Display();
+                        }
+                    } else {
+                        System.out.println("no register users till now ");
                     }
-                }
-                else {
-                    System.out.println("no register users till now ");
-                }
                     break;
                 case 4:
                     running = false;
