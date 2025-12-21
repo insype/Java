@@ -1,43 +1,32 @@
-class Vehicle {
-   public static void Start(){
-        System.out.println("all vehicle needs key to start");
-    }
-   public void Tires(){
-    System.out.println("vehicles has different number of tires");
-   } 
+import java.util.ArrayList;
+
+@FunctionalInterface
+interface Ifilter{
+    void greaterThanTwo(int n);    
 }
 
 
-class Car extends Vehicle{
-    //hiding 
-    public static void Start(){
-        System.out.println("car needs key to start");
-    }
-    @Override
-    public void Tires(){
-        System.out.println("cars has 4 tires");
-    }
-}
-class Bike extends Vehicle{
-    public static void Start(){
-        System.out.println("bike needs key to start");
-    }
-    @Override
-    public void Tires(){
-        System.out.println("bike has 2 tires");
-    }
-}
 
 public class Main {
-
+    
     public static void main(String[] args) {
+       ArrayList<Integer> num = new ArrayList<>();
+       num.add(1); 
+       num.add(2); 
+       num.add(3); 
+       num.add(4); 
 
-        Vehicle v2 = new Car();
-        v2.Tires();
+    Ifilter filter = n -> {
+        if(n>2)
+            System.out.println(n);
+    };
 
-
+    for (int n: num) {
+    filter.greaterThanTwo(n);        
     }
     
-}
+    }
 
     
+    
+}
