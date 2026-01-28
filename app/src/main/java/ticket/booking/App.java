@@ -3,12 +3,12 @@
  */
 package ticket.booking;
 
+import java.util.Scanner;
+
 public class App {
-    public String getGreeting() {
-        return "Hello World!";
-    }
 
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+        System.out.println("running train booking system");
+        Scanner sc = new Scanner(System.in);   //needed to take input
     }
 }
