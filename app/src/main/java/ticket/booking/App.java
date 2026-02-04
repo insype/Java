@@ -94,9 +94,9 @@ public class App {
                         User user = bookingService.loginUser(loginName, loginPassword);
                         if (user != null) {
                             loggedInUser = user;
-                            System.out.println("Login successful 🎉");
+                            System.out.println("Login successful ");
                         } else {
-                            System.out.println("Invalid username or password ❌");
+                            System.out.println("Invalid username or password ");
                         }
                     } catch (IOException e) {
                         System.out.println("Login failed: " + e.getMessage());
@@ -108,6 +108,7 @@ public class App {
                     if (loggedInUser == null)
                     {
                         System.out.println("Please login first ");
+                        break;
                     }
                    else {
                        bookingService.fetchBooking(loggedInUser.getName());
@@ -183,6 +184,18 @@ public class App {
 
                     break;
 
+                case 6: // cancel the booking
+                    if(loggedInUser == null){
+                        System.out.println("login first");
+                        break;
+                    }
+                    else{
+                        bookingService.fetchBooking(loggedInUser.getName());
+                        System.out.println("enter ticket id to cancel: ");
+                        String ticketId = sc.next();
+
+                        bookingService.cancelBooking(loggedInUser,ticketId);
+                    }
 
                 case 7:
                     System.out.println("Exiting... 👋");

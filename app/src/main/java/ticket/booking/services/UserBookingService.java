@@ -97,7 +97,8 @@ public class UserBookingService {
         realUser.getTicketsBooked()
                 .forEach(ticket ->
                         System.out.println(ticket.getTicketInfo()));
-    }
+        }
+
         public void bookSeat(User user, Train train, String source , String destination){
             List<List<Integer>> seats = train.getSeats();
             int row = -1, col = -1;
@@ -143,6 +144,52 @@ public class UserBookingService {
                 System.out.println(ticket.getTicketInfo());
             }catch(IOException ex){
                 System.out.println("failed to save booking "+ex.getMessage());
+            }
+        }
+
+        public void cancelBooking(User user, String ticketId){
+            if(user.getTicketsBooked() == null || user.getTicketsBooked().isEmpty()){
+                System.out.println("No Booking to cancel ");
+                return;
+            }
+            Ticket ticketToCancel = null;
+
+            for (Ticket t : user.getTicketsBooked()){
+                if(t.getTicketId().equals(ticketId)){
+                    ticketToCancel = t;
+                    break;
+                }
+            }
+            if(ticketToCancel == null){
+                System.out.println("ticket not found");
+                return;
+            }
+            Train train = ticketToCancel.getTrain();
+            freeSeat(train);
+
+            user.getTicketsBooked().remove(ticketToCancel);
+
+            try{
+                saveUsers();
+                System.out.println("booking cancelled successfully");
+            }
+            catch (IOException ex){
+                System.out.println("failed to cancel booking "+ex.getMessage());
+            }
+        }
+
+        private void freeSeat(Train train){
+            List<List<Integer>> seats = train.getSeats();
+
+            outer:
+            for (int i = 0; i < seats.size(); i++) {
+                for (int j = 0; j < seats.get(i).size() ; j++) {
+                    if(seats.get(i).get(j)==1){
+                        seats.get(i).set(j,0);
+                        break outer;
+                    }
+                }
+
             }
         }
 }
