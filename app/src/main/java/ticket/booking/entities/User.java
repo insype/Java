@@ -1,6 +1,7 @@
 package ticket.booking.entities;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -19,7 +20,9 @@ public class User {
         this.userId = userId;
     }
 
-    public User(){}
+    public User(){
+        ticketsBooked = new ArrayList<>();
+    }
 
     public String getName() {
         return name;

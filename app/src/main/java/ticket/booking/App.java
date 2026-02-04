@@ -1,12 +1,16 @@
 package ticket.booking;
 
+import ticket.booking.entities.Train;
 import ticket.booking.entities.User;
+import ticket.booking.services.TrainService;
 import ticket.booking.services.UserBookingService;
+import ticket.booking.util.TrainServiceUtil;
 import ticket.booking.util.UserServiceUtil;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.UUID;
 
@@ -99,6 +103,47 @@ public class App {
                         System.out.println("Login failed: " + e.getMessage());
                     }
                     break;
+
+                case 3:
+                    //fetch booking
+                    if (loggedInUser == null)
+                    {
+                        System.out.println("Please login first ");
+                    }
+                   else {
+                       bookingService.fetchBooking(loggedInUser.getName());
+                    }
+                    break;
+
+                case 4://search trains
+                    System.out.println("Enter source: ");
+                    String source = sc.next();
+
+                    System.out.println("Enter Destination: ");
+                    String destination = sc.next();
+
+                    try{
+                        // load trains form the json
+                        List<Train> trains = TrainServiceUtil.loadTrains();
+
+                        //create TrainService
+                        TrainService trainService = new TrainService(trains);
+
+                        //search the trains and if there is , the store it int the list<train> result
+                        List<Train> result = trainService.searchTrains(source,destination);
+
+                        //show the result
+                        if(result.isEmpty()){
+                            System.out.println("No trains found");
+                        }
+                        else {
+                            result.forEach(t -> System.out.println(t.getTrainInfo()));
+                        }
+
+                    }
+                    catch (IOException ex){
+                        System.out.println("Error loading the trains "+ex.getMessage());
+                    }
 
 
                 case 7:

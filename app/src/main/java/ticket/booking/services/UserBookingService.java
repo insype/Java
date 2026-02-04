@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class UserBookingService {
 
@@ -69,15 +70,29 @@ public class UserBookingService {
     }
 
     // Fetch bookings for a specific user
-    public void fetchBooking(User user) {
-        if (user.getTicketsBooked() == null || user.getTicketsBooked().isEmpty()) {
-            System.out.println("No bookings found for user " + user.getName());
+    public void fetchBooking(String username) {
+
+        Optional<User> foundUser = userList.stream()
+                .filter(u -> u.getName().equalsIgnoreCase(username))
+                .findFirst();
+
+        if (foundUser.isEmpty()) {
+            System.out.println("User not found");
             return;
         }
 
-        System.out.println("Bookings for user: " + user.getName());
-        for (var ticket : user.getTicketsBooked()) {
-            System.out.println(ticket.getTicketInfo());
+        User realUser = foundUser.get();
+
+        if (realUser.getTicketsBooked() == null ||
+                realUser.getTicketsBooked().isEmpty()) {
+            System.out.println("No bookings found for user " + realUser.getName());
+            return;
         }
+
+        System.out.println("Bookings for user: " + realUser.getName());
+        realUser.getTicketsBooked()
+                .forEach(ticket ->
+                        System.out.println(ticket.getTicketInfo()));
     }
+
 }
