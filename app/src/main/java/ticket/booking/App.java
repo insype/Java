@@ -42,7 +42,6 @@ public class App {
             bookingService = new UserBookingService();
         } catch (IOException e) {
             System.out.println("Failed to initialize booking service: " + e.getMessage());
-            e.printStackTrace();
             return;
         }
 
@@ -144,6 +143,45 @@ public class App {
                     catch (IOException ex){
                         System.out.println("Error loading the trains "+ex.getMessage());
                     }
+                    break;
+
+                case 5: //Booking seat
+                    if(loggedInUser == null){
+                        System.out.println("please login first");
+                        break;
+                    }
+                    System.out.println("Enter source: ");
+                    String src = sc.next();
+
+                    System.out.println("Enter Destination: ");
+                    String dest = sc.next();
+
+                    try{
+                        //load trains form trains.json into the list trains
+                        List<Train> trains = TrainServiceUtil.loadTrains();
+
+                        TrainService trainService = new TrainService(trains);
+                        List<Train> availableTrains = trainService.searchTrains(src,dest);
+
+                        if(availableTrains.isEmpty()){
+                            System.out.println("no trains available");
+                        }
+                        else {
+                            availableTrains.forEach(t-> System.out.println(t.getTrainInfo()));
+                        }
+
+                        System.out.println("Choose the train index for 0,1,2..");
+                        int index = sc.nextInt();
+                        Train selectedTrain = availableTrains.get(index);
+
+                        bookingService.bookSeat(loggedInUser,selectedTrain,src,dest);
+
+                    }
+                    catch (IOException ex){
+                        System.out.println(ex.getMessage());
+                    }
+
+                    break;
 
 
                 case 7:

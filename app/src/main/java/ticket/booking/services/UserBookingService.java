@@ -2,6 +2,8 @@ package ticket.booking.services;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import ticket.booking.entities.Ticket;
+import ticket.booking.entities.Train;
 import ticket.booking.entities.User;
 import ticket.booking.util.UserServiceUtil;
 
@@ -10,6 +12,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+import java.util.function.DoubleToIntFunction;
 
 public class UserBookingService {
 
@@ -94,5 +98,51 @@ public class UserBookingService {
                 .forEach(ticket ->
                         System.out.println(ticket.getTicketInfo()));
     }
+        public void bookSeat(User user, Train train, String source , String destination){
+            List<List<Integer>> seats = train.getSeats();
+            int row = -1, col = -1;
 
+            //find the first available seat
+            outer:
+            for (int i = 0; i < seats.size(); i++){
+                for (int j = 0; j < seats.get(i).size() ; j++){
+                    if(seats.get(i).get(j) == 0){
+                        row = i;
+                        col = j;
+                        break outer;
+                    }
+                }
+            }
+
+            if(row == -1){
+                System.out.println("No seats available");
+                return;
+            }
+
+            //Mark the seat as booked
+            seats.get(row).set(col,1);
+
+            Ticket ticket = new Ticket(
+                    UUID.randomUUID().toString(),
+                    user.getUserId(),
+                    source,
+                    destination,
+                    java.time.LocalDate.now().toString(),
+                    train
+            );
+
+            if(user.getTicketsBooked() == null)
+            {
+                user.setTicketsBooked(new ArrayList<>());
+            }
+
+            user.getTicketsBooked().add(ticket);
+            try{
+                saveUsers();
+                System.out.println("seat booking successfully");
+                System.out.println(ticket.getTicketInfo());
+            }catch(IOException ex){
+                System.out.println("failed to save booking "+ex.getMessage());
+            }
+        }
 }

@@ -76,5 +76,4 @@ public class Train {
         return String.format("Train ID: %s Train No: %s", trainId, trainNo);
     }
 
-
 }

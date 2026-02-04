@@ -18,5 +18,43 @@
       "jaipur",
       "delhi"
     ]
+  },
+  {
+    "trainId": "abc",
+    "trainNo": 123,
+    "seats": [
+      [1,1,1],
+      [1,1,0],
+      [0,1,1]
+    ],
+    "stationTimes": {
+      "kathmandu": "13:50:00",
+      "bhaktapur": "13:50:00",
+      "pokhara": "13:50:00"
+    },
+    "stations": [
+      "kathmandu",
+      "bhaktapur",
+      "pokhara"
+    ]
+  },
+  {
+    "trainId": "xyz",
+    "trainNo": 12,
+     "seats": [
+      [1,1,1],
+      [0,1,0],
+      [1,0,1]
+    ],
+    "stationTimes": {
+      "kathmandu": "13:50:00",
+      "bhaktapur": "13:50:00",
+      "pokhara": "13:50:00"
+    },
+    "stations": [
+      "kathmandu",
+      "bhaktapur",
+      "pokhara"
+    ]
   }
 ]
